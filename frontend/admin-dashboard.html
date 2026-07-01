@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard – MediTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="bg-light page-wrap">
+
+<nav class="navbar navbar-dark bg-dark sticky-nav admin-nav">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html"><i class="bi bi-capsule-pill"></i> MediTrack – Admin</a>
+    <div class="ms-auto d-flex gap-2 align-items-center">
+      <button id="themeToggle" title="Toggle dark/light mode">🌙</button>
+      <button class="btn btn-outline-light btn-sm" id="logoutBtn">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4">
+  <div class="modern-card admin-hero mb-4 p-4 p-md-5">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+      <div>
+        <h4 class="mb-1"><i class="bi bi-speedometer2"></i> Admin Dashboard</h4>
+        <p class="mb-0 text-muted">Monitor users, pharmacies, medicines, and reservations in one place.</p>
+      </div>
+      <span class="status-pill badge-instock">Live Overview</span>
+    </div>
+  </div>
+
+  <!-- Analytics Cards -->
+  <div class="row g-3 mb-4" id="analyticsCards">
+    <div class="col-6 col-md-2">
+      <div class="card modern-card stat-card stat-blue text-center border-0">
+        <div class="card-body py-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <small class="stat-label">Users</small>
+            <span class="stat-icon"><i class="bi bi-people-fill"></i></span>
+          </div>
+          <div class="fs-3 fw-bold" id="statUsers">–</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="card modern-card stat-card stat-green text-center border-0">
+        <div class="card-body py-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <small class="stat-label">Pharmacies</small>
+            <span class="stat-icon"><i class="bi bi-shop"></i></span>
+          </div>
+          <div class="fs-3 fw-bold" id="statPharmacies">–</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="card modern-card stat-card stat-cyan text-center border-0">
+        <div class="card-body py-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <small class="stat-label">Medicines</small>
+            <span class="stat-icon"><i class="bi bi-capsule"></i></span>
+          </div>
+          <div class="fs-3 fw-bold" id="statMedicines">–</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="card modern-card stat-card stat-amber text-center border-0">
+        <div class="card-body py-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <small class="stat-label">Reservations</small>
+            <span class="stat-icon"><i class="bi bi-bookmark-check-fill"></i></span>
+          </div>
+          <div class="fs-3 fw-bold" id="statReservations">–</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="card modern-card stat-card stat-indigo text-center border-0">
+        <div class="card-body py-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <small class="stat-label">Pending</small>
+            <span class="stat-icon"><i class="bi bi-hourglass-split"></i></span>
+          </div>
+          <div class="fs-3 fw-bold" id="statPending">–</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="card modern-card stat-card stat-red text-center border-0">
+        <div class="card-body py-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <small class="stat-label">Cancelled</small>
+            <span class="stat-icon"><i class="bi bi-x-circle-fill"></i></span>
+          </div>
+          <div class="fs-3 fw-bold" id="statCancelled">–</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mb-4 admin-tabs">
+    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#recentTab">Recent Reservations</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#usersTab" id="loadUsersTab">Users</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#pharmaciesTab" id="loadPharmaciesTab">Pharmacies</button></li>
+  </ul>
+
+  <div class="tab-content">
+
+    <!-- Recent Reservations -->
+    <div class="tab-pane fade show active" id="recentTab">
+      <div class="table-responsive modern-card p-2 bg-white">
+        <table class="table table-hover bg-white mb-0">
+          <thead class="table-dark">
+            <tr><th>Res. ID</th><th>User</th><th>Medicine</th><th>Pharmacy</th><th>Status</th><th>Date</th></tr>
+          </thead>
+          <tbody id="recentTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Users -->
+    <div class="tab-pane fade" id="usersTab">
+      <div class="table-responsive modern-card p-2 bg-white">
+        <table class="table table-hover bg-white mb-0">
+          <thead class="table-primary">
+            <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody id="usersTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pharmacies -->
+    <div class="tab-pane fade" id="pharmaciesTab">
+      <div class="table-responsive modern-card p-2 bg-white">
+        <table class="table table-hover bg-white mb-0">
+          <thead class="table-success">
+            <tr><th>Name</th><th>City</th><th>Owner</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody id="pharmaciesTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
